@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[type="radio"] {
+    @apply hidden;
+}
+
+form > div > p {
+    @apply font-bold text-slate-450 text-xs mb-2;
+}
+
+label {
+    @apply text-white font-bold bg-slate-300 w-full rounded-full py-1 cursor-pointer transition;
+}
+
+input[type="radio"]:checked + label {
+    @apply bg-slate-700;
+}
