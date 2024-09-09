@@ -63,14 +63,16 @@ function generateBoard(theme, boardSize, playersNumber) {
     generatedCardNumbers.forEach((number, i) => {
         const memoryCard = document.createElement("div");
         memoryCard.className =
-            "bg-slate-700 p-4 rounded-full  flex justify-center items-center text-white font-bold ";
+            "bg-slate-700 p-4 rounded-full flex justify-center items-center text-white font-bold";
         boardSize === 4
             ? memoryCard.classList.add("w-20", "h-20", "text-4xl")
             : memoryCard.classList.add("w-16", "h-16", "text-3xl");
         memoryCard.dataset.index = i;
         // memoryCard.textContent = number;
+        const memoryCardText = document.createElement("span");
+        memoryCardText.classList.add("opacity-0");
+        memoryCard.appendChild(memoryCardText);
         gameBoard.appendChild(memoryCard);
-
         memoryCard.addEventListener("click", () => flipCard(memoryCard, number));
     });
 }
@@ -94,18 +96,73 @@ function generateCardNumbers(boardSize) {
 
 function flipCard(memoryCard, number) {
     const index = memoryCard.dataset.index;
-
     if (flippedCards.length < 2 && !flippedCards.includes(memoryCard)) {
-        memoryCard.textContent = number;
+        memoryCard.classList.remove("bg-slate-700");
+        memoryCard.classList.add(
+            "bg-amber-500",
+            "transform",
+            "animate-flip-y",
+            "transition-colors",
+            "duration-50",
+            "delay-300"
+        );
+        memoryCard
+            .getElementsByTagName("span")[0]
+            .classList.add("transform", "animate-text-flip-y");
+        memoryCard.getElementsByTagName("span")[0].textContent = number;
+        setTimeout(() => {
+            memoryCard.getElementsByTagName("span")[0].classList.add("opacity-100");
+        }, 300);
         flippedCards.push(memoryCard);
+
         if (flippedCards.length === 2) {
             if (checkMatch()) {
+                flippedCards[0].classList.remove("bg-amber-500");
+                flippedCards[0].classList.add("bg-slate-300");
+                flippedCards[1].classList.remove("bg-amber-500");
+                flippedCards[1].classList.add("bg-slate-300");
                 flippedCards.length = 0;
-
             } else {
                 setTimeout(() => {
-                    flippedCards[0].textContent = "";
-                    flippedCards[1].textContent = "";
+                    flippedCards[0].getElementsByTagName("span")[0].textContent = "";
+                    flippedCards[1].getElementsByTagName("span")[0].textContent = "";
+                    flippedCards[0]
+                        .getElementsByTagName("span")[0]
+                        .classList.remove("opacity-100");
+                    flippedCards[1]
+                        .getElementsByTagName("span")[0]
+                        .classList.remove("opacity-100");
+                    flippedCards[0].classList.remove(
+                        "bg-amber-500",
+                        "animate-flip-y"
+                    );
+                    flippedCards[0]
+                        .getElementsByTagName("span")[0]
+                        .classList.remove("animate-text-flip-y");
+                    flippedCards[0].classList.add(
+                        "bg-slate-700",
+                        "animate-flip-back-y"
+                    );
+                    flippedCards[0]
+                        .getElementsByTagName("span")[0]
+                        .classList.add("animate-text-flip-back-y");
+
+                    flippedCards[1].classList.remove(
+                        "bg-amber-500",
+                        "animate-flip-y"
+                    );
+                    flippedCards[1]
+                        .getElementsByTagName("span")[0]
+                        .classList.remove("animate-text-flip-y");
+
+                    flippedCards[1].classList.add(
+                        "bg-slate-700",
+                        "animate-flip-back-y"
+                    );
+                    flippedCards[1]
+                        .getElementsByTagName("span")[0]
+                        .classList.add("animate-text-flip-back-y");
+
                     flippedCards.length = 0;
                 }, 1000);
             }
@@ -116,5 +173,8 @@ function flipCard(memoryCard, number) {
 function checkMatch() {
     const [card1, card2] = flippedCards;
     /* ... */
-    return card1.textContent === card2.textContent;
+    return (
+        card1.getElementsByTagName("span")[0].textContent ===
+        card2.getElementsByTagName("span")[0].textContent
+    );
 }

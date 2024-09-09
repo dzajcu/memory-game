@@ -21,6 +21,31 @@ module.exports = {
             fontFamily: {
                 Mukta: "Mukta, sans-serif",
             },
+            // Dodajemy animacje i kluczowe ramki
+            keyframes: {
+                flip: {
+                    "0%": { transform: "rotateY(0deg)" },
+                    "100%": { transform: "rotateY(180deg)" },
+                },
+                "flip-back": {
+                    "0%": { transform: "rotateY(180deg)" },
+                    "100%": { transform: "rotateY(0deg)" },
+                },
+                "text-flip": {
+                    "0%": { transform: "rotateY(0deg)" },
+                    "100%": { transform: "rotateY(-180deg)" },
+                },
+                "text-flip-back": {
+                    "0%": { transform: "rotateY(-180deg)" },
+                    "100%": { transform: "rotateY(0deg)" },
+                },
+            },
+            animation: {
+                "flip-y": "flip 0.6s ease-out forwards",
+                "flip-back-y": "flip-back 0.6s ease-out forwards",
+                "text-flip-y": "text-flip 0.6s ease-out forwards",
+                "text-flip-back-y": "text-flip-back 0.6s ease-out forwards",
+            },
         },
     },
     plugins: [],
